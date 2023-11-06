@@ -1,65 +1,46 @@
 import java.util.Scanner;
 
 public class Calculator {
-    public static int addition(int number1, int number2) {
-        return number1 + number2;
-    }
-
-    public static int subtraction(int number1, int number2) {
-        return number1 - number2;
-    }
-
-    public static int multiplication(int number1, int number2) {
-        return number1 * number2;
-    }
-
-    public static int division(int number1, int number2) {
-        return number1 / number2;
-    }
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Calculator:");
-        
-        // Read the first number
-        System.out.print("Enter the first number: ");
-        int input1 = scanner.nextInt();
+        System.out.print("Enter expression: ");
+        String input = scanner.nextLine();
 
-        // Read the operation (+, -, *, /)
-        System.out.print("Enter the operation (+, -, *, /): ");
-        String operation = scanner.next();
+        try {
+            double result = evaluateExpression(input);
+            System.out.println("Result: " + result);
+        } catch (Exception e) {
+            System.out.println("Error: Invalid expression");
+        }
+    }
 
-        // Read the second number
-        System.out.print("Enter the second number: ");
-        int input2 = scanner.nextInt();
+    public static double evaluateExpression(String expression) {
+        String[] tokens = expression.split(" ");
+        double operand1 = Double.parseDouble(tokens[0]);
+        double operand2 = Double.parseDouble(tokens[2]);
+        String operator = tokens[1];
+        double result = 0.0;
 
-        int answer = 0;
-
-        // Perform the corresponding operation based on user input
-        switch (operation) {
+        switch (operator) {
             case "+":
-                answer = addition(input1, input2);
+                result = operand1 + operand2;
                 break;
             case "-":
-                answer = subtraction(input1, input2);
+                result = operand1 - operand2;
                 break;
             case "*":
-                answer = multiplication(input1, input2);
+                result = operand1 * operand2;
                 break;
             case "/":
-                if (input2 != 0) {
-                    answer = division(input1, input2);
+                if (operand2 != 0) {
+                    result = operand1 / operand2;
                 } else {
-                    System.out.println("Error: Division by zero is not allowed.");
-                    return;
+                    throw new ArithmeticException("Division by zero is not allowed");
                 }
                 break;
             default:
-                System.out.println("Error: Invalid operation.");
-                return;
+                throw new IllegalArgumentException("Invalid operator: " + operator);
         }
-
-        // Print the answer
-        System.out.println("Answer: " + answer);
+        return result;
     }
 }
